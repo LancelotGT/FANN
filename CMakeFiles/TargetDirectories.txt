@@ -1,0 +1,4 @@
+/Users/lancelot/OpenSourceSoftware/fann-code/src/CMakeFiles/fann.dir
+/Users/lancelot/OpenSourceSoftware/fann-code/src/CMakeFiles/doublefann.dir
+/Users/lancelot/OpenSourceSoftware/fann-code/src/CMakeFiles/floatfann.dir
+/Users/lancelot/OpenSourceSoftware/fann-code/src/CMakeFiles/fixedfann.dir
