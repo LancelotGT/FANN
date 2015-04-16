@@ -28,13 +28,38 @@ int main()
 	const float desired_error = (const float) 0.001;
 	const unsigned int max_epochs = 50000;
 	const unsigned int epochs_between_reports = 1000;
+	struct fann_train_data *data = fann_read_train_from_file("../datasets/speech3.train");
+	unsigned int i;
+	unsigned int decimal_point;
+	fann_type *calc_out;
 
 	struct fann *ann = fann_create_standard(num_layers, num_input, num_neurons_hidden, num_output);
 
 	fann_set_activation_function_hidden(ann, FANN_SIGMOID_SYMMETRIC);
 	fann_set_activation_function_output(ann, FANN_SIGMOID_SYMMETRIC);
 
-	fann_train_on_file(ann, "../datasets/speech3.train", max_epochs, epochs_between_reports, desired_error);
+	// fann_train_on_file(ann, "../datasets/speech3.train", max_epochs, epochs_between_reports, desired_error);
+	fann_train_on_data(ann, data, max_epochs, epochs_between_reports, desired_error);
+
+	/**
+	 *  write the output to a separate file
+	 */
+	FILE *f;
+	f = fopen("speech.output", "a");
+
+	for(i = 0; i < fann_length_train_data(data); i++)
+	{	
+		unsigned int j;
+		calc_out = fann_run(ann, data->input[i]);
+		// printf("XOR test (%f,%f) -> %f, should be %f, difference=%f\n",
+		// 	   data->input[i][0], data->input[i][1], calc_out[0], data->output[i][0],
+		// 	   fann_abs(calc_out[0] - data->output[i][0]));
+		for (j = 0; j < num_output; j++) 
+		{
+			fprintf(f, "%5f ", calc_out[j]);
+		}
+		fprintf(f, "\n");
+	}
 
 	fann_save(ann, "speech.net");
 
