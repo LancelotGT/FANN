@@ -65,7 +65,7 @@ int main()
 	 * create the validation dataset and output the mean square error
 	 */
 	
-	struct fann_train_data *data = fann_read_train_from_file("../datasets/speech.validation");
+	struct fann_train_data *test_data = fann_read_train_from_file("../datasets/speech2.train");
 	printf("Testing network. %f\n", fann_test_data(ann, test_data));
 	
 	fann_save(ann, "speech.net");
