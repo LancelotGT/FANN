@@ -25,7 +25,7 @@ int main()
 	const unsigned int num_output = 129;
 	const unsigned int num_layers = 3;
 	const unsigned int num_neurons_hidden = 129;
-	const float desired_error = (const float) 0.001;
+	const float desired_error = (const float) 0.01;
 	const unsigned int max_epochs = 50000;
 	const unsigned int epochs_between_reports = 1000;
 	struct fann_train_data *data = fann_read_train_from_file("../datasets/speech3.train");
@@ -44,23 +44,30 @@ int main()
 	/**
 	 *  write the output to a separate file
 	 */
-	FILE *f;
-	f = fopen("speech.output", "a");
+	// FILE *f;
+	// f = fopen("speech.output", "a");
 
-	for(i = 0; i < fann_length_train_data(data); i++)
-	{	
-		unsigned int j;
-		calc_out = fann_run(ann, data->input[i]);
-		// printf("XOR test (%f,%f) -> %f, should be %f, difference=%f\n",
-		// 	   data->input[i][0], data->input[i][1], calc_out[0], data->output[i][0],
-		// 	   fann_abs(calc_out[0] - data->output[i][0]));
-		for (j = 0; j < num_output; j++) 
-		{
-			fprintf(f, "%5f ", calc_out[j]);
-		}
-		fprintf(f, "\n");
-	}
+	// for(i = 0; i < fann_length_train_data(data); i++)
+	// {	
+	// 	unsigned int j;
+	// 	calc_out = fann_run(ann, data->input[i]);
+	// 	// printf("XOR test (%f,%f) -> %f, should be %f, difference=%f\n",
+	// 	// 	   data->input[i][0], data->input[i][1], calc_out[0], data->output[i][0],
+	// 	// 	   fann_abs(calc_out[0] - data->output[i][0]));
+	// 	for (j = 0; j < num_output; j++) 
+	// 	{
+	// 		fprintf(f, "%5f ", calc_out[j]);
+	// 	}
+	// 	fprintf(f, "\n");
+	// }
 
+	/**
+	 * create the validation dataset and output the mean square error
+	 */
+	
+	struct fann_train_data *data = fann_read_train_from_file("../datasets/speech.validation");
+	printf("Testing network. %f\n", fann_test_data(ann, test_data));
+	
 	fann_save(ann, "speech.net");
 
 	fann_destroy(ann);
